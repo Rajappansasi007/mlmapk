@@ -22,11 +22,10 @@ source.exclude_dirs = tests, bin, .git, .github
 version = 1.0.0
 
 # (list) Application requirements
-# SQLite is built-in; kivy and bcrypt handle the UI and secure password verification
-requirements = python3,kivy,bcrypt,sqlite3
+# Explicitly pin python3 to a stable version with precompiled wheels/recipes
+requirements = python3==3.11.9,kivy==2.3.0,bcrypt,sqlite3
 
 # (list) Supported orientations
-# Valid values: landscape, sensorLandscape, portrait, sensorPortrait, all
 orientation = portrait
 
 # (bool) Indicate if the application should be fullscreen
@@ -46,7 +45,7 @@ android.api = 33
 # (int) Minimum API supported by your APK
 android.minapi = 21
 
-# (str) Android NDK version matching GitHub Actions ubuntu-22.04 runner
+# (str) Android NDK version matching GitHub Actions runner
 android.ndk = 25b
 
 # (str) Android SDK build-tools version
@@ -79,8 +78,8 @@ android.logcat_filters = *:S python:D
 # Python for Android (p4a) specific
 # =============================================================================
 
-# (str) python-for-android branch to use
-p4a.branch = master
+# (str) python-for-android branch to use (use develop instead of unstable master)
+p4a.branch = develop
 
 
 # =============================================================================
