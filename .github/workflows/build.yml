@@ -30,12 +30,12 @@ jobs:
           sudo apt-get install -y \
             git zip unzip autoconf libtool pkg-config \
             zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 \
-            cmake libffi-dev libssl-dev ccache
+            cmake libffi-dev libssl-dev ccache libltdl-dev
 
       - name: Install Buildozer & Dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install --upgrade buildozer "cython<3.0"
+          pip install --upgrade buildozer "cython<3.0" virtualenv
 
       - name: Accept Android SDK Licenses
         run: |
@@ -48,9 +48,9 @@ jobs:
           ANDROID_HOME: /usr/local/lib/android/sdk
           ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
         run: |
-          # Remove any cached corrupted toolchain builds
+          # Purge previous mismatch artifacts
           rm -rf .buildozer
-          buildozer android clean || true
+          rm -rf ~/.buildozer
           buildozer android debug
 
       - name: Upload APK Artifact
