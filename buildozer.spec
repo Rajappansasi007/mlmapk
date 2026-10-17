@@ -6,34 +6,34 @@ title = Song Lyrics Manager
 # (str) Package name
 package.name = mlmapp
 
-# (str) Package domain (needed for android/ios packaging)
+# (str) Package domain
 package.domain = org.rajappansasi007
 
-# (str) Source code where the main.py lives
+# (str) Source code directory
 source.dir = .
 
-# (list) Source files to include (leave empty to include all files)
+# (list) Source files to include
 source.include_exts = py,png,jpg,kv,atlas,db,json,txt
 
-# (list) List of directories to exclude
+# (list) Directories to exclude
 source.exclude_dirs = tests, bin, .git, .github
 
 # (str) Application versioning
 version = 1.0.0
 
 # (list) Application requirements
-# Explicitly pin python3 to a stable version with precompiled wheels/recipes
-requirements = python3==3.11.9,kivy==2.3.0,bcrypt,sqlite3
+# Keep python3 generic so p4a compiles matching hostpython3 and target python3 automatically
+requirements = python3,kivy,bcrypt,sqlite3
 
 # (list) Supported orientations
 orientation = portrait
 
-# (bool) Indicate if the application should be fullscreen
+# (bool) Fullscreen mode
 fullscreen = 0
 
 
 # =============================================================================
-# Android specific
+# Android configuration
 # =============================================================================
 
 # (list) Permissions
@@ -42,57 +42,52 @@ android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE
 # (int) Target Android API
 android.api = 33
 
-# (int) Minimum API supported by your APK
+# (int) Minimum API supported
 android.minapi = 21
 
-# (str) Android NDK version matching GitHub Actions runner
+# (str) Android NDK version matching runner toolchain
 android.ndk = 25b
 
 # (str) Android SDK build-tools version
 android.build_tools_version = 34.0.0
 
-# (bool) Automatically accept SDK licenses
+# (bool) Auto-accept SDK licenses
 android.accept_sdk_license = True
 
-# (list) The Android architectures to build for
+# (list) Architectures to build for
 android.archs = arm64-v8a, armeabi-v7a
 
-# (bool) If True, app data can be backed up via adb
+# (bool) Allow backup via adb
 android.allow_backup = True
 
-# (bool) Enable AndroidX support
+# (bool) Enable AndroidX
 android.enable_androidx = True
 
-# (str) Output format for packaging (apk)
+# (str) Artifact formats
 android.release_artifact = apk
 android.debug_artifact = apk
 
-# (bool) Copy library instead of making a libpymodules.so
+# (bool) Copy libraries
 android.copy_libs = 1
 
-# (str) Android logcat filters to use
+# (str) Logcat filters
 android.logcat_filters = *:S python:D
 
 
 # =============================================================================
-# Python for Android (p4a) specific
+# Python-for-Android (p4a) configuration
 # =============================================================================
 
-# (str) python-for-android branch to use (use develop instead of unstable master)
-p4a.branch = develop
+# Pin to the stable p4a release tag to prevent pulling unreleased hostpython3 recipes
+p4a.branch = master
 
 
 # =============================================================================
-# Buildozer specific
+# Buildozer settings
 # =============================================================================
 
 [buildozer]
 
-# (int) Log level (0 = error only, 1 = info, 2 = debug)
 log_level = 2
-
-# (int) Display warning if buildozer is run as root
 warn_on_root = 1
-
-# (str) Path to build artifact storage
 bin_dir = ./bin
