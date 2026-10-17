@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-      - name: Checkout Code
+      - name: Checkout Repository
         uses: actions/checkout@v4
 
       - name: Set up Python
@@ -32,18 +32,15 @@ jobs:
             zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 \
             cmake libffi-dev libssl-dev ccache
 
-      - name: Install Latest Buildozer & Cython
+      - name: Install Buildozer & Dependencies
         run: |
           python -m pip install --upgrade pip
-          # Installing buildozer from git master includes fixes for modern SDK paths
-          pip install --upgrade https://github.com/kivy/buildozer/archive/master.zip
-          pip install "cython<3.0"
+          pip install --upgrade buildozer "cython<3.0"
 
-      - name: Accept Pre-installed Android SDK Licenses
+      - name: Accept Android SDK Licenses
         run: |
           export ANDROID_HOME="/usr/local/lib/android/sdk"
           export PATH="$ANDROID_HOME/cmdline-tools/latest/bin:$PATH"
-          # Accept licenses without broken pipe errors
           yes | sdkmanager --licenses || true
 
       - name: Build APK with Buildozer
@@ -51,6 +48,9 @@ jobs:
           ANDROID_HOME: /usr/local/lib/android/sdk
           ANDROID_NDK_HOME: /usr/local/lib/android/sdk/ndk/25.2.9519653
         run: |
+          # Remove any cached corrupted toolchain builds
+          rm -rf .buildozer
+          buildozer android clean || true
           buildozer android debug
 
       - name: Upload APK Artifact
@@ -59,4 +59,3 @@ jobs:
           name: Song-Lyrics-Manager-APK
           path: bin/*.apk
           retention-days: 14
-          
