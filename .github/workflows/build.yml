@@ -13,17 +13,25 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Set up Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
-      - name: Install System Dependencies
+      - name: Install System Build Dependencies
         run: |
           sudo apt update
-          sudo apt install -y git zip unzip openjdk-17-jdk python3-pip autoconf libtool pkg-config zlib1g-dev libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev
+          sudo apt install -y git zip unzip autoconf libtool pkg-config zlib1g-dev \
+            libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev \
+            ccache libbz2-dev libsqlite3-dev liblzma-dev lstd++-12-dev
 
-      - name: Cache Buildozer & Android Dependencies
+      - name: Cache Buildozer & Android SDK/NDK
         uses: actions/cache@v4
         with:
           path: |
@@ -33,13 +41,15 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-buildozer-
 
-      - name: Install Buildozer & Cython
+      - name: Install Buildozer and Cython
         run: |
-          pip install --upgrade pip
-          pip install --upgrade buildozer Cython virtualenv
+          python -m pip install --upgrade pip
+          pip install --upgrade "Cython<3.0" buildozer virtualenv
 
       - name: Build Debug APK
         run: |
+          export JAVA_HOME=$JAVA_HOME_17_X64
+          export PATH=$JAVA_HOME/bin:$PATH
           buildozer -v android debug
 
       - name: Upload APK Artifact
