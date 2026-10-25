@@ -1,310 +1,245 @@
 [app]
 
-(str) Title of your application
-
+# (str) Title of your application
 title = Song Lyrics Manager
 
-(str) Package name
-
+# (str) Package name
 package.name = songlyricsmanager
 
-(str) Package domain (needed for android packaging)
+# (str) Package domain (needed for android/ios packaging)
+package.domain = org.mlm.app
 
-package.domain = org.test
-
-(str) Source code where the main.py lives
-
+# (str) Source code where the main.py lives
 source.dir = .
 
-(list) Source files to include (let empty to include all the source files)
+# (list) Source files to include (let empty to include all the files)
+source.include_exts = py,png,jpg,kv,atlas,sql,db
 
-source.include_exts = py,png,jpg,kv,atlas,json,txt,sqlite3,db
+# (list) List of inclusions using pattern matching
+#source.include_patterns = assets/*,images/*.png
 
-(list) List of inclusions using pattern matching
+# (list) Source files to exclude (let empty to not exclude anything)
+#source.exclude_exts = spec
 
-#source.include_patterns = assets/,images/.png
+# (list) List of directory to exclude (let empty to not exclude anything)
+source.exclude_dirs = tests, bin, venv, .git, .github, .buildozer
 
-(list) Source files to exclude (let empty to not exclude anything)
-
-source.exclude_exts = spec
-
-(list) List of directory to exclude (let empty to not exclude anything)
-
-source.exclude_dirs = tests, bin, venv, .git, .github
-
-(list) List of exclusions using pattern matching
-
+# (list) List of exclusions using pattern matching
 #source.exclude_patterns = license,data/audio/*.wav
 
-(str) Application versioning (method 1)
+# (str) Application versioning (method 1)
+version = 1.0.0
 
-version = 0.1
+# (str) Application versioning (method 2)
+# version.regex = __version__ = ['"](.*)['"]
+# version.filename = %(source.dir)s/main.py
 
-(str) Application versioning (method 2)
+# (list) Application requirements
+# Pin python3 to 3.11.9 to prevent p4a from pulling unreleased/experimental versions
+requirements = python3==3.11.9,kivy==2.3.0,sqlite3,urllib3,requests
 
-version.regex = version = '"['"]
+# (str) Custom source folders for requirements
+# Sets custom source for any requirements with recipes
+# requirements.source.kivy = ../../kivy
 
-version.filename = %(source.dir)s/main.py
-
-(list) Application requirements
-
-comma separated e.g. requirements = sqlite3,kivy
-
-requirements = python33.11.9,kivy2.3.0,sqlite3,urllib3,requests,certifi,chardet,idna
-
-(str) Custom source folders for requirements
-
-Sets custom source for any requirements with recipes
-
-requirements.source.kivy = ../../kivy
-
-(list) Garden requirements
-
+# (list) Garden requirements
 #garden_requirements =
 
-(str) Presplash of the application
-
+# (str) Presplash of the application
 #presplash.filename = %(source.dir)s/data/presplash.png
 
-(str) Icon of the application
-
+# (str) Icon of the application
 #icon.filename = %(source.dir)s/data/icon.png
 
-(list) Supported orientations
-
-Valid options are: landscape, portrait, portrait-reverse or landscape-reverse
-
+# (list) Supported orientations
+# Valid values are: landscape, sensorLandscape, portrait or all
 orientation = portrait
 
-(list) List of service to declare
-
+# (list) List of service to declare
 #services = NAME:ENTRYPOINT_TO_PY,NAME2:ENTRYPOINT2_TO_PY
 
-OSX Specific
+#
+# OSX Specific
+#
 
-author = © Copyright Info
+#
+# author = © Copyright Info
 
-change the major version of python used by the app
+#
+# Android specific
+#
 
-osx.python_version = 3
-
-Kivy version to use
-
-osx.kivy_version = 2.3.0
-
-Android specific
-
-(bool) Indicate if the application should be fullscreen
-
+# (bool) Indicate if the application should be fullscreen to not
 fullscreen = 0
 
-(string) Presplash background color (for android toolchain)
+# (string) Presplash background color (for android toolchain)
+# Supported formats are: #RRGGBB #AARRGGBB or one of the following names:
+# red, blue, green, black, white, gray, cyan, magenta, yellow, lightgray,
+# darkgray, grey, lightgrey, darkgrey.
+#android.presplash_color = #FFFFFF
 
-Supported formats are: #RRGGBB #AARRGGBB or one of the following names:
+# (list) Permissions
+android.permissions = INTERNET
 
-red, blue, green, black, white, gray, cyan, magenta, yellow, lightgray,
-
-darkgray, grey, lightgrey, darkgrey.
-
-#android.presplash_color = ''
-
-(list) Permissions
-
-android.permissions = INTERNET,WRITE_EXTERNAL_STORAGE,READ_EXTERNAL_STORAGE
-
-(list) features (adds uses-feature tags to manifest)
-
-#android.features = android.hardware.usb.host
-
-(int) Target Android API, should be as high as possible.
-
+# (int) Target Android API, should be as high as possible.
 android.api = 34
 
-(int) Minimum API your APK / AAB will support.
-
+# (int) Minimum API your APK / AAB will support.
 android.minapi = 21
 
-(int) Android SDK version to use
+# (int) Android SDK version to use
+#android.sdk = 34
 
-android.sdk = 34
-
-(str) Android NDK version to use
-
+# (str) Android NDK version to use
 android.ndk = 25b
 
-(bool) Use --private data storage (True) or --dir public storage (False)
+# (bool) Use --private data storage (True) or --dir public storage (False)
+#android.private_storage = True
 
-android.private_storage = True
-
-(str) Android NDK directory (if empty, it will be automatically downloaded.)
-
+# (str) Android NDK directory (if empty, it will be automatically downloaded.)
 #android.ndk_path =
 
-(str) Android SDK directory (if empty, it will be automatically downloaded.)
-
+# (str) Android SDK directory (if empty, it will be automatically downloaded.)
 #android.sdk_path =
 
-(str) ANT directory (if empty, it will be automatically downloaded.)
-
+# (str) ANT directory (if empty, it will be automatically downloaded.)
 #android.ant_path =
 
-(bool) If True, then skip trying to update the Android sdk
+# (bool) If True, then skip trying to update the Android sdk
+# This can be useful to avoid excess Internet downloads or save time
+# when an update is due and you just want to test/build your package
+#android.skip_update = False
 
-This can be useful to avoid excess Internet downloads or save time
-
-when an update is due and you just want to test/build your package
-
-android.skip_update = False
-
-(bool) If True, then automatically accept SDK license
-
-agreements. This is intended for automation only. If set to False,
-
-the default, you will be shown the license when first running
-
-buildozer.
-
+# (bool) If True, then automatically accept SDK license
+# agreements. This is intended for automation only. If set to False,
+# the default, you will be shown the license when first running
+# buildozer.
 android.accept_sdk_license = True
-android.auto_accept_sdk_license = True
 
-(str) Android entry point, default is ok for Kivy-based app
-
+# (str) Android entry point, default is ok for Kivy-based app
 #android.entrypoint = org.kivy.android.PythonActivity
 
-(str) Full name including package path of the Java class that implements Android Activity
+# (str) Android app theme, default is ok for Kivy-based app
+# android.apptheme = "@android:style/Theme.NoTitleBar"
 
-Useful to replace the default PythonActivity with your own implementation
-
-#android.activity_class_name = org.kivy.android.PythonActivity
-
-(str) Extra xml to write directly inside the  element of AndroidManifest.xml
-
-use that parameter to provide a filename from where to load your custom XML code
-
-#android.extra_manifest_xml = ./src/android/extra_manifest.xml
-
-(str) Extra xml to write directly inside the  tag of AndroidManifest.xml
-
-use that parameter to provide a filename from where to load your custom XML code
-
-#android.extra_manifest_application_xml = ./src/android/extra_manifest_application.xml
-
-(list) Pattern to whitelist for the whole project
-
+# (list) Pattern to whitelist for the whole project
 #android.whitelist =
 
-(str) Path to a custom whitelist file
-
+# (str) Path to a custom whitelist file
 #android.whitelist_src =
 
-(str) Path to a custom blacklist file
-
+# (str) Path to a custom blacklist file
 #android.blacklist_src =
 
-(list) List of Java .jar files to add to the libs so that pyjnius can access
+# (list) List of Java .jar files to add to the libs so that pyjnius can access
+# their classes. Don't add jars that you do not need, since extra jars can slow
+# down the build process. Allows wildcards matching, for example:
+# SOURCES/foo/bar/*.jar
+#android.add_jars = foo.jar,bar/*,use_recurv_stop/classes.jar
 
-their classes. Don't add jars that you do not need, since extra jars can slow
-
-down the build process. Allows wildcards matching, for example:
-
-#android.add_jars = foo.jar,bar.jar,path/to/more/*.jar
-
-(list) List of Java files to add to the android project (can be java or a
-
-directory containing the files)
-
+# (list) List of Java files to add to the android project (can be java or a
+# directory containing the files)
 #android.add_src =
 
-(list) Android AAR archives to add
-
+# (list) Android AAR archives to add
 #android.add_aars =
 
-(list) Gradle dependencies to add
-
+# (list) Gradle dependencies to add
 #android.gradle_dependencies =
 
-(list) add java compile options
+# (bool) Enable AndroidX support. Enable when you use Android API>=29
+android.enable_androidx = True
 
-this can for example be necessary when importing certain java libraries using the 'android.gradle_dependencies' option
-
-see https://developer.android.com/studio/write/java8-support for example:
-
+# (list) add java compile options
+# this can for example be necessary when importing certain java libraries using the 'android.gradle_dependencies' option
+# see https://developer.android.com/studio/write/java8-support for example
 #android.add_compile_options = "sourceCompatibility = 1.8", "targetCompatibility = 1.8"
 
-(list) Packaging options to add
+# (list) Gradle repositories to add {can be necessary for some android.gradle_dependencies}
+# please enclose in double quotes 
+# e.g. android.gradle_repositories = "maven { url 'https://kotlin.bintray.com/ktor' }"
+#android.gradle_repositories =
 
-see https://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.PackagingOptions.html
+# (list) packaging options to add 
+# see https://google.github.io/android-gradle-dsl/current/com.android.build.gradle.internal.dsl.PackagingOptions.html
+# can be necessary to solve conflicts in packaging request
+# please enclose in double quotes 
+# e.g. android.add_packaging_options = "exclude 'META-INF/common.kotlin_module'", "exclude 'META-INF/*.kotlin_module'"
+#android.add_packaging_options =
 
-can be used to solve conflicts in gradle dependencies
-
-see it in use here: https://github.com/kivy/python-for-android/blob/development/tests/issues/issue_1381/buildozer.spec
-
-#android.packaging_options =
-
-(list) Java classes to add as activities to the manifest.
-
+# (list) Java classes to add as activities to the manifest.
 #android.add_activities = com.example.ExampleActivity
 
-(list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
+# (str) OUYA Console category. Should be one of GAME or APP
+# If you leave this blank, OUYA support will not be enabled
+#android.ouya.category = GAME
 
-In GitHub Actions CI, building just arm64-v8a is much faster and covers almost all modern Android devices.
+# (str) Filename of OUYA Console icon. It must be a 732x412 png image.
+#android.ouya.icon.filename = %(source.dir)s/data/ouya_icon.png
 
-android.archs = arm64-v8a
+# (str) XML file to include as an intent filters in <activity> tag
+#android.manifest.intent_filters =
 
-(int) overrides automatic versionCode computation (used in build.gradle)
+# (list) Copy these files to src/main/res/xml/ (used for example with context-registered receiver)
+#android.res_xml = PATH_TO_FILE,
 
-this is not the same as app version and should only be edited if you know what you're doing
+# (str) launchMode to set for the main activity
+#android.manifest.launch_mode = standard
 
-android.numeric_version = 1
+# (list) Android additional libraries to copy into libs/armeabi
+#android.add_libs_armeabi = libs/android/*.so
+#android.add_libs_armeabi_v7a = libs/android-v7a/*.so
+#android.add_libs_arm64_v8a = libs/android-v8a/*.so
+#android.add_libs_x86 = libs/android-x86/*.so
+#android.add_libs_mips = libs/android-mips/*.so
 
-(bool) enables Android auto backup feature (Android API >=23)
+# (bool) Indicate whether the screen should stay on
+# Don't forget to add the WAKE_LOCK permission if you set this to True
+#android.wakelock = False
 
-android.allow_backup = True
-
-(str) XML file for custom backup rules (see official Android documentation)
-
-android.backup_rules =
-
-(str) If you need to insert variables into your AndroidManifest.xml file,
-
-you can define them here.
-
-android.manifest_placeholders = [:]
-
-(bool) Logcat filters to use
-
-#android.logcat_filters = *:S python:D
-
-(bool) Copy library instead of making a libpymodules.so
-
-#android.copy_libs = 1
-
-(list) Android application meta-data to set (key=value format)
-
+# (list) Android application meta-data to set (key=value format)
 #android.meta_data =
 
-(list) Android runtime permissions to request at application start
+# (list) Android library project to add (will be added in the
+# project.properties automatically.)
+#android.library_references =
 
-#android.permissions_runtime =
+# (list) Android shared libraries which will be added to AndroidManifest.xml using <uses-library> tag
+#android.uses_library =
 
-(list) Android custom components to add
+# (str) Android logcat filters to use
+#android.logcat_filters = *:S python:D
 
-#android.custom_components =
+# (bool) Copy library instead of making a libpymodules.so
+#android.copy_libs = 1
+
+# (list) The Android archs to build for, choices: armeabi-v7a, arm64-v8a, x86, x86_64
+# Start with arm64-v8a to ensure fast, stable builds in CI
+android.archs = arm64-v8a
+
+# (int) overrides automatic versionCode computation (used in build.gradle)
+# this is not the same as app version and should only be edited if you know what you're doing
+# android.numeric_version = 1
+
+# (bool) enables Android auto backup feature (Android API >=23)
+android.allow_backup = True
+
+# (str) The format used to package the app for release mode (aab or apk or aar).
+# android.release_artifact = aab
+
+# (str) The format used to package the app for debug mode (apk)
+# android.debug_artifact = apk
 
 [buildozer]
 
-(int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
-
+# (int) Log level (0 = error only, 1 = info, 2 = debug (with command output))
 log_level = 2
 
-(int) Display warning if buildozer is run as root (0 = False, 1 = True)
-
+# (int) Display warning if buildozer is run as root (0 = False, 1 = True)
 warn_on_root = 1
 
-(str) Path to build artifact storage, absolute or relative to spec file
+# (str) Path to build artifact storage, default is ./bin
+# build_dir = ./.buildozer
 
-build_dir = ./.buildozer
-
-(str) Path to build output (i.e. .apk, .aab, .ipa) storage
-
+# (str) Path to build output (i.e. .apk, .aab, etc)
 bin_dir = ./bin
