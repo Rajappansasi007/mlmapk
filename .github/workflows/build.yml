@@ -29,7 +29,7 @@ jobs:
           sudo apt update
           sudo apt install -y git zip unzip autoconf libtool pkg-config zlib1g-dev \
             libncurses5-dev libncursesw5-dev libtinfo5 cmake libffi-dev libssl-dev \
-            ccache libbz2-dev libsqlite3-dev liblzma-dev lstd++-12-dev
+            ccache libbz2-dev libsqlite3-dev liblzma-dev libstdc++-12-dev
 
       - name: Cache Buildozer & Android SDK/NDK
         uses: actions/cache@v4
