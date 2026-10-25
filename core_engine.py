@@ -25,6 +25,24 @@ NOTE_MAP = {
     'A': 9, 'A#': 10, 'Bb': 10, 'B': 11, 'Cb': 11
 }
 
+MONTH_TO_SIG = {
+    'apr': '4', 'aug': '8', 'mar': '3', 'may': '5', 'jun': '6',
+    'jul': '7', 'sep': '9', 'oct': '10', 'nov': '11', 'dec': '12',
+    'jan': '1', 'feb': '2'
+}
+
+def clean_time_signature(val):
+    if not val or str(val).lower() == 'nan':
+        return ""
+    s = str(val).strip()
+    m = re.match(r'^0?(\d+)-([a-zA-Z]{3})$', s)
+    if m:
+        numerator = m.group(1)
+        month_code = m.group(2).lower()
+        if month_code in MONTH_TO_SIG:
+            return f"{numerator}/{MONTH_TO_SIG[month_code]}"
+    return s
+
 def transliterate_malayalam_to_english(text):
     if not text:
         return ""
@@ -54,6 +72,17 @@ def transliterate_malayalam_to_english(text):
         i += 1
     return "".join(output)
 
+def convert_to_db_format(raw_text):
+    if not raw_text or not raw_text.strip():
+        return ""
+    normalized = raw_text.replace('\r\n', '\n').strip()
+    slides = [s.strip() for s in re.split(r'\n\s*\n', normalized) if s.strip()]
+    formatted_slides = []
+    for slide in slides:
+        lines = [line.strip() for line in slide.split('\n') if line.strip()]
+        formatted_slides.append("<BR>".join(lines))
+    return "<slide>".join(formatted_slides)
+
 def convert_from_db_format(db_text):
     if not db_text or str(db_text).lower() == 'nan':
         return ""
@@ -65,6 +94,20 @@ def extract_root_and_suffix(key_str):
     m = re.match(r'^([A-G][#b]?)(.*)$', str(key_str).strip())
     return (m.group(1), m.group(2)) if m else ('C', '')
 
+def get_keys_for_base(orig_key_str):
+    if not orig_key_str or str(orig_key_str).lower() == 'nan':
+        return ['C', 'C#', 'D', 'Eb', 'E', 'F', 'F#', 'G', 'Ab', 'A', 'Bb', 'B'], 0
+    root, suffix = extract_root_and_suffix(orig_key_str)
+    scale_names = CHORDS_FLAT if 'b' in root else CHORDS_SHARP
+    key_options = [f"{n}{suffix}" for n in scale_names]
+    curr_key_name = f"{root}{suffix}"
+    if curr_key_name in key_options:
+        default_idx = key_options.index(curr_key_name)
+    else:
+        key_options.insert(0, curr_key_name)
+        default_idx = 0
+    return key_options, default_idx
+
 def calculate_semitones(from_key, to_key):
     r1, _ = extract_root_and_suffix(from_key)
     r2, _ = extract_root_and_suffix(to_key)
@@ -73,7 +116,6 @@ def calculate_semitones(from_key, to_key):
 def transpose_single_chord(chord_str, semitones):
     if semitones == 0 or not chord_str:
         return chord_str
-
     def shift_note(root_note):
         idx = NOTE_MAP.get(root_note)
         if idx is not None:
